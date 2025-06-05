@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">week4-BIM</string>
+    <string name="header">BMI计算器</string>
+    <string name="weight">体重（kg）</string>
+    <string name="height">身高（m）</string>
+    <string name="btnStr">计算</string>
+</resources>
