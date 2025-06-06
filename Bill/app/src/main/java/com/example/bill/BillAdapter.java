@@ -33,6 +33,8 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         return new BillViewHolder(v);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull BillViewHolder holder, int position) {
         Transaction item = dataList.get(position);
@@ -48,7 +50,6 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
             return false;
         });
     }
-
     @Override
     public int getItemCount() {
         return dataList.size();
@@ -57,11 +58,17 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
     public static class BillViewHolder extends RecyclerView.ViewHolder {
         TextView tvDate, tvDesc, tvAmount;
 
+
         public BillViewHolder(View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tv_date);
             tvDesc = itemView.findViewById(R.id.tv_desc);
             tvAmount = itemView.findViewById(R.id.tv_amount);
+
+
         }
     }
+
+
 }
+

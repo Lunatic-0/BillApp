@@ -29,6 +29,31 @@ public class BillFragment extends Fragment {
     private SharedPreferences prefs;
     private BroadcastReceiver updateReceiver;
 
+    private void addTransaction(boolean isIncome) {
+        String amountStr = binding.etAmount.getText().toString().trim();
+        String category = binding.etCategory.getText().toString().trim();
+
+        if (amountStr.isEmpty() || category.isEmpty()) {
+            return; // 简化处理：不填不添加
+        }
+
+        double amount = Double.parseDouble(amountStr);
+        Transaction transaction = new Transaction(amount, category, isIncome);
+
+        billList.add(0, transaction); // 添加到顶部
+        adapter.notifyItemInserted(0);
+        binding.rvBills.scrollToPosition(0);
+
+        saveTransactions(); // 保存
+        updateBalance();    // 更新余额
+        notifyHomeFragment();
+
+        // 清空输入框
+        binding.etAmount.setText("");
+        binding.etCategory.setText("");
+    }
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBillBinding.inflate(inflater, container, false);
@@ -66,6 +91,12 @@ public class BillFragment extends Fragment {
         LocalBroadcastManager.getInstance(requireContext())
                 .registerReceiver(updateReceiver, new IntentFilter("com.example.bill.UPDATE_UI"));
 
+        // 添加收入按钮
+        binding.btnAddIncome.setOnClickListener(v -> addTransaction(true));
+
+// 添加支出按钮
+        binding.btnAddExpense.setOnClickListener(v -> addTransaction(false));
+
         return binding.getRoot();
     }
 
@@ -76,17 +107,25 @@ public class BillFragment extends Fragment {
         binding = null;
     }
 
+
     private void loadTransactions() {
         String json = prefs.getString("transactions", null);
+        List<Transaction> listFromJson = null;
         if (json != null) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<Transaction>>(){}.getType();
-            billList = gson.fromJson(json, type);
+            Type type = new TypeToken<List<Transaction>>() {}.getType();
+            listFromJson = gson.fromJson(json, type);
         }
-        if (billList == null) {
-            billList = new ArrayList<>();
+
+        if (listFromJson == null) {
+            listFromJson = new ArrayList<>();
         }
+
+        billList.clear(); // ✅ 清空原 list 引用
+        billList.addAll(listFromJson); // ✅ 添加新内容（保持同一个 list 实例）
     }
+
+
 
     private void saveTransactions() {
         SharedPreferences.Editor editor = prefs.edit();
@@ -111,7 +150,7 @@ public class BillFragment extends Fragment {
         double totalIncome = prefs.getFloat("total_income", 0.0f);
         double totalExpense = prefs.getFloat("total_expense", 0.0f);
         double balance = totalIncome - totalExpense;
-        binding.tvBalance.setText(String.format("可用余额：￥%.2f", balance));
+        binding.tvBalance.setText(String.format("余额：￥%.2f", balance));
     }
 
     private void notifyHomeFragment() {
