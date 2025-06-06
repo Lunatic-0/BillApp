@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item
+        android:id="@+id/nav_home"
+        android:title="首页"
+        android:icon="@drawable/ic_home" />
+    <item
+        android:id="@+id/nav_bill"
+        android:title="账单"
+        android:icon="@drawable/ic_bill" />
+    <item
+        android:id="@+id/nav_asset"
+        android:title="资产"
+        android:icon="@drawable/ic_asset" />
 </menu>
