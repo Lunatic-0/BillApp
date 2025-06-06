@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,12 +9,65 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- 放大显示 -->
+        <TextView
+            android:id="@+id/tv_total_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="总收入：￥0.00"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_total_expense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="总支出：￥0.00"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="结余：￥0.00"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_remaining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="剩余额度：￥0.00"
+            android:textSize="20sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_avg_daily"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="日均消费：￥0.00"
+            android:textSize="20sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tv_avg_available"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="剩余每日可用额度：￥0.00"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 下移的预算和月份 -->
         <TextView
             android:id="@+id/tv_month"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2025年6月"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"/>
 
         <EditText
@@ -21,42 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入本月预算"
-            android:inputType="numberDecimal"/>
-
-        <TextView
-            android:id="@+id/tv_total_income"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="总收入：" />
-
-        <TextView
-            android:id="@+id/tv_total_expense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="总支出：" />
-
-        <TextView
-            android:id="@+id/tv_balance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="结余：" />
-
-        <TextView
-            android:id="@+id/tv_remaining"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="剩余额度：" />
-
-        <TextView
-            android:id="@+id/tv_avg_daily"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="日均消费：" />
-
-        <TextView
-            android:id="@+id/tv_avg_available"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="剩余每日可用额度：" />
+            android:inputType="numberDecimal"
+            android:layout_marginTop="8dp"/>
     </LinearLayout>
 </ScrollView>
