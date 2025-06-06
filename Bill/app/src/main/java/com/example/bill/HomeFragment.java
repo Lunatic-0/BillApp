@@ -2,63 +2,52 @@ package com.example.bill;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Calendar;
+
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText etBudget;
+    private TextView tvIncome, tvExpense, tvBalance, tvRemaining, tvAvgDaily, tvAvgAvailable;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+        etBudget = view.findViewById(R.id.et_budget);
+        tvIncome = view.findViewById(R.id.tv_total_income);
+        tvExpense = view.findViewById(R.id.tv_total_expense);
+        tvBalance = view.findViewById(R.id.tv_balance);
+        tvRemaining = view.findViewById(R.id.tv_remaining);
+        tvAvgDaily = view.findViewById(R.id.tv_avg_daily);
+        tvAvgAvailable = view.findViewById(R.id.tv_avg_available);
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+        double income = 5000;
+        double expense = 3200;
+        double budget = 4000;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+        Calendar cal = Calendar.getInstance();
+        int today = cal.get(Calendar.DAY_OF_MONTH);
+        int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        double remaining = budget - expense;
+        double avgDaily = expense / today;
+        double avgAvailable = (daysInMonth - today) > 0 ? remaining / (daysInMonth - today) : 0;
+
+        tvIncome.setText("总收入：￥" + income);
+        tvExpense.setText("总支出：￥" + expense);
+        tvBalance.setText("结余：￥" + (income - expense));
+        tvRemaining.setText("剩余额度：￥" + String.format("%.2f", remaining));
+        tvAvgDaily.setText("日均消费：￥" + String.format("%.2f", avgDaily));
+        tvAvgAvailable.setText("剩余每日可用额度：￥" + String.format("%.2f", avgAvailable));
+
+        return view;
     }
 }

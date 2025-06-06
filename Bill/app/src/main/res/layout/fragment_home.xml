@@ -1,14 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2025年6月"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:id="@+id/et_budget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入本月预算"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:id="@+id/tv_total_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="总收入：" />
+
+        <TextView
+            android:id="@+id/tv_total_expense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="总支出：" />
+
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="结余：" />
+
+        <TextView
+            android:id="@+id/tv_remaining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="剩余额度：" />
+
+        <TextView
+            android:id="@+id/tv_avg_daily"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="日均消费：" />
+
+        <TextView
+            android:id="@+id/tv_avg_available"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="剩余每日可用额度：" />
+    </LinearLayout>
+</ScrollView>
