@@ -5,67 +5,104 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:fitsSystemWindows="true"
-    android:layout_marginTop="48dp"> <!-- 页面整体下移 -->
+    android:layout_marginTop="32dp"> <!-- 页面整体下移 -->
 
-    <!-- 显示可用余额 -->
     <TextView
         android:id="@+id/tv_balance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="可用余额：￥0.00"
+        android:text="总余额: ￥0.00"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
-    <!-- 输入金额 -->
-    <EditText
-        android:id="@+id/et_amount"
+    <TextView
+        android:id="@+id/tv_remaining"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:minHeight="48dp"
-        android:hint="请输入金额"
-        android:inputType="numberDecimal"
-        android:layout_marginBottom="8dp" />
+        android:layout_height="wrap_content"
+        android:text="本月余额: ￥0.00"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
 
-    <!-- 输入描述 -->
-    <EditText
-        android:id="@+id/et_category"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:minHeight="48dp"
-        android:hint="请输入备注"
-        android:layout_marginBottom="8dp" />
-
-    <!-- 按钮行 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金额:"
+            android:textSize="16sp"
+            android:minWidth="80dp" />
+
+        <EditText
+            android:id="@+id/et_amount"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:hint="请输入金额"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            android:gravity="start" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="备注:"
+            android:textSize="16sp"
+            android:minWidth="80dp" />
+
+        <EditText
+            android:id="@+id/et_category"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:hint="请输入备注"
+            android:inputType="text"
+            android:textSize="16sp"
+            android:gravity="start" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginBottom="16dp">
 
         <Button
             android:id="@+id/btn_add_income"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="添加收入"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp" />
+            android:text="添加收入"
+            android:minHeight="48dp" />
 
         <Button
             android:id="@+id/btn_add_expense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="添加支出"
             android:layout_weight="1"
-            android:layout_marginStart="8dp" />
+            android:text="添加支出"
+            android:minHeight="48dp" />
+
     </LinearLayout>
 
-    <!-- 账单列表 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_bills"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:contentDescription="账单列表" />
+        android:layout_weight="1" />
 </LinearLayout>

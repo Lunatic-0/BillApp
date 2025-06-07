@@ -6,10 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -24,6 +20,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 public class BillFragment extends Fragment {
 
@@ -48,9 +48,9 @@ public class BillFragment extends Fragment {
 
         adapter.setOnItemLongClickListener(position -> {
             new AlertDialog.Builder(requireContext())
-                    .setTitle("确认删除")
-                    .setMessage("是否删除此交易？")
-                    .setPositiveButton("确认", (dialog, which) -> {
+                    .setTitle("删除提示")
+                    .setMessage("确定要删除本条记录吗?")
+                    .setPositiveButton("确定", (dialog, which) -> {
                         billList.remove(position);
                         adapter.notifyItemRemoved(position);
                         saveTransactions();
@@ -96,32 +96,46 @@ public class BillFragment extends Fragment {
             return;
         }
         if (category.isEmpty()) {
-            binding.etCategory.setError("请输入类别");
+            binding.etCategory.setError("请输入备注");
             return;
         }
 
         try {
             double amount = Double.parseDouble(amountStr);
             if (amount <= 0) {
-                binding.etAmount.setError("金额必须大于0");
+                binding.etAmount.setError("输入金额不能小于0");
                 return;
             }
+
+            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+            Transaction transaction = new Transaction(date, category, amount, isIncome);
 
             if (!isIncome) {
                 float budget = prefs.getFloat("budget", 0.0f);
                 double totalExpense = prefs.getFloat("total_expense", 0.0f);
                 if (budget > 0 && (totalExpense + amount) > budget) {
-                    binding.etAmount.setError("支出超出预算");
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle("预算提醒")
+                            .setMessage("这笔支出超出了你的预算，是否要继续记录?")
+                            .setPositiveButton("确定", (dialog, which) -> {
+                                billList.add(0, transaction);
+                                adapter.notifyItemInserted(0);
+                                binding.rvBills.scrollToPosition(0);
+                                saveTransactions();
+                                updateBalance();
+                                notifyHomeFragment();
+                                binding.etAmount.setText("");
+                                binding.etCategory.setText("");
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
                     return;
                 }
             }
 
-            String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            Transaction transaction = new Transaction(date, category, amount, isIncome);
             billList.add(0, transaction);
             adapter.notifyItemInserted(0);
             binding.rvBills.scrollToPosition(0);
-
             saveTransactions();
             updateBalance();
             notifyHomeFragment();
@@ -129,7 +143,7 @@ public class BillFragment extends Fragment {
             binding.etAmount.setText("");
             binding.etCategory.setText("");
         } catch (NumberFormatException e) {
-            binding.etAmount.setError("请输入有效的数字");
+            binding.etAmount.setError("Please enter a valid number");
         }
     }
 
@@ -137,9 +151,14 @@ public class BillFragment extends Fragment {
         String json = prefs.getString("transactions", null);
         List<Transaction> listFromJson = null;
         if (json != null) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Transaction>>(){}.getType();
-            listFromJson = gson.fromJson(json, type);
+            try {
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Transaction>>(){}.getType();
+                listFromJson = gson.fromJson(json, type);
+            } catch (Exception e) {
+                Log.e("BillFragment", "Failed to parse transactions", e);
+                listFromJson = new ArrayList<>();
+            }
         }
 
         if (listFromJson == null) {
@@ -172,11 +191,11 @@ public class BillFragment extends Fragment {
     private void updateBalance() {
         double totalIncome = prefs.getFloat("total_income", 0.0f);
         double totalExpense = prefs.getFloat("total_expense", 0.0f);
-        double balance = totalIncome - totalExpense;
-        float budget = prefs.getFloat("budget", 0.0f);
-        double remaining = budget - totalExpense;
-        binding.tvBalance.setText(String.format("余额：￥%.2f", balance));
-        binding.tvBalance.setText(String.format("剩余额度：￥%.2f", remaining));
+        double previousBalance = prefs.getFloat("previous_balance", 0.0f);
+        double monthlyBalance = totalIncome - totalExpense;
+        double totalBalance = previousBalance + monthlyBalance;
+        binding.tvBalance.setText(String.format("总余额: ￥%.2f", totalBalance));
+        binding.tvRemaining.setText(String.format("本月余额: ￥%.2f", monthlyBalance));
     }
 
     private void notifyHomeFragment() {
