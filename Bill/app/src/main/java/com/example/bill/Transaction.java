@@ -1,6 +1,9 @@
 package com.example.bill;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Transaction implements Serializable {
     private int id;
@@ -18,13 +21,13 @@ public class Transaction implements Serializable {
         this.isIncome = isIncome;
     }
 
-    // 构造函数2：不含日期，默认今天（你可以在外部设置）
+    // 构造函数2：不含日期，默认今天
     public Transaction(double amount, String description, boolean isIncome) {
-        this((new java.text.SimpleDateFormat("yyyy-MM-dd")).format(new java.util.Date()),
+        this(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()),
                 description, amount, isIncome);
     }
 
-    // 构造函数3：明确提供日期（可选）
+    // 构造函数3：明确提供日期
     public Transaction(double amount, String description, boolean isIncome, String date) {
         this(date, description, amount, isIncome);
     }
