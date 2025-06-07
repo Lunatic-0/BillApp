@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import android.util.Log;
+import android.widget.ScrollView;
+import android.view.inputmethod.EditorInfo;
 
 public class HomeFragment extends Fragment {
 
@@ -45,6 +48,18 @@ public class HomeFragment extends Fragment {
 
         binding.btnSaveBudget.setOnClickListener(v -> saveBudget());
 
+        // 确保 EditText 获得焦点时滚动到可见区域
+        setupEditTextFocus();
+
+        // 处理键盘“完成”键
+        binding.etBudget.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                saveBudget();
+                return true;
+            }
+            return false;
+        });
+
         updateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -55,12 +70,29 @@ public class HomeFragment extends Fragment {
                 updateUI();
             }
         };
+
         LocalBroadcastManager.getInstance(requireContext())
                 .registerReceiver(updateReceiver, new IntentFilter("com.example.bill.UPDATE_UI"));
-
         updateUI();
 
         return binding.getRoot();
+    }
+
+    private void setupEditTextFocus() {
+        binding.etBudget.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                scrollToView(binding.etBudget);
+            }
+        });
+    }
+
+    private void scrollToView(View view) {
+        ScrollView scrollView = (ScrollView) binding.getRoot();
+        scrollView.post(() -> {
+            int[] location = new int[2];
+            view.getLocationOnScreen(location);
+            scrollView.smoothScrollTo(0, location[1] - 100); // 留出顶部空间
+        });
     }
 
     @Override
@@ -73,9 +105,14 @@ public class HomeFragment extends Fragment {
     private void loadTransactions() {
         String json = prefs.getString("transactions", null);
         if (json != null) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<Transaction>>(){}.getType();
-            transactions = gson.fromJson(json, type);
+            try {
+                Gson gson = new Gson();
+                Type type = new TypeToken<List<Transaction>>(){}.getType();
+                transactions = gson.fromJson(json, type);
+            } catch (Exception e) {
+                Log.e("HomeFragment", "Failed to parse transactions", e);
+                transactions = new ArrayList<>();
+            }
         }
         if (transactions == null) {
             transactions = new ArrayList<>();
@@ -91,17 +128,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void saveBudget() {
-        String budgetStr = binding.etBudget.getText().toString();
-        float budget = 0;
+        String budgetStr = binding.etBudget.getText().toString().trim();
+        float budget = 0.0f;
         if (!budgetStr.isEmpty()) {
             try {
                 budget = Float.parseFloat(budgetStr);
                 if (budget < 0) {
-                    binding.etBudget.setError("预算不能为负数");
+                    binding.etBudget.setError("预算不能为负");
                     return;
                 }
             } catch (NumberFormatException e) {
-                binding.etBudget.setError("请输入有效金额");
+                binding.etBudget.setError("请输入有效数字");
                 return;
             }
         }
@@ -117,7 +154,8 @@ public class HomeFragment extends Fragment {
             budget = budgetStr.isEmpty() ? 0 : Double.parseDouble(budgetStr);
         } catch (NumberFormatException e) {
             budget = 0;
-            binding.etBudget.setError("请输入有效的预算");
+            binding.etBudget.setError("请输入有效数字");
+            return;
         }
 
         Calendar cal = Calendar.getInstance();
