@@ -1,29 +1,24 @@
 package com.example.bill;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import com.example.bill.Transaction;
 import com.example.bill.databinding.FragmentHomeBinding;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,31 +31,33 @@ public class HomeFragment extends Fragment {
     private List<Transaction> transactions = new ArrayList<>();
     private BroadcastReceiver updateReceiver;
 
+    private static final String BILL_PREF_NAME = "BillPrefs";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-        // 初始化 SharedPreferences
-        prefs = requireActivity().getSharedPreferences("BillPrefs", Context.MODE_PRIVATE);
+        prefs = requireActivity().getSharedPreferences(BILL_PREF_NAME, Context.MODE_PRIVATE);
         totalIncome = prefs.getFloat("total_income", 0.0f);
         totalExpense = prefs.getFloat("total_expense", 0.0f);
         loadTransactions();
+        loadBudget();
 
+        binding.btnSaveBudget.setOnClickListener(v -> saveBudget());
 
-        // 注册广播接收器
         updateReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 totalIncome = prefs.getFloat("total_income", 0.0f);
                 totalExpense = prefs.getFloat("total_expense", 0.0f);
                 loadTransactions();
+                loadBudget();
                 updateUI();
             }
         };
         LocalBroadcastManager.getInstance(requireContext())
                 .registerReceiver(updateReceiver, new IntentFilter("com.example.bill.UPDATE_UI"));
 
-        // 初始更新 UI
         updateUI();
 
         return binding.getRoot();
@@ -85,7 +82,33 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private void loadBudget() {
+        float budget = prefs.getFloat("budget", 0.0f);
+        if (budget > 0) {
+            binding.etBudget.setText(String.format("%.2f", budget));
+        }
+        binding.tvMonth.setText(new SimpleDateFormat("yyyy年M月", Locale.getDefault()).format(Calendar.getInstance().getTime()));
+    }
 
+    private void saveBudget() {
+        String budgetStr = binding.etBudget.getText().toString();
+        float budget = 0;
+        if (!budgetStr.isEmpty()) {
+            try {
+                budget = Float.parseFloat(budgetStr);
+                if (budget < 0) {
+                    binding.etBudget.setError("预算不能为负数");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                binding.etBudget.setError("请输入有效金额");
+                return;
+            }
+        }
+        prefs.edit().putFloat("budget", budget).apply();
+        updateUI();
+        notifyOtherFragments();
+    }
 
     private void updateUI() {
         String budgetStr = binding.etBudget.getText().toString();
@@ -114,7 +137,7 @@ public class HomeFragment extends Fragment {
         binding.tvAvgAvailable.setText(String.format("剩余每日可用额度：￥%.2f", avgAvailable));
     }
 
-    private void notifyBillFragment() {
+    private void notifyOtherFragments() {
         Intent intent = new Intent("com.example.bill.UPDATE_UI");
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent);
     }

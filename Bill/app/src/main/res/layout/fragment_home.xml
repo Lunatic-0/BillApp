@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">  <!-- 这里设置 fitsSystemWindows -->
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:paddingTop="32dp">
 
-        <!-- 你的控件们... -->
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2025年6月"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:id="@+id/tv_total_income"
@@ -20,6 +29,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
+
         <TextView
             android:id="@+id/tv_total_expense"
             android:layout_width="match_parent"
@@ -62,21 +72,40 @@
             android:textSize="20sp"
             android:layout_marginBottom="16dp"/>
 
-        <!-- 下移的预算和月份 -->
-        <TextView
-            android:id="@+id/tv_month"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="2025年6月"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
 
-        <EditText
-            android:id="@+id/et_budget"
-            android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本月预算："
+                android:textSize="16sp"
+                android:minWidth="100dp" />
+
+            <EditText
+                android:id="@+id/et_budget"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:hint="请输入本月预算"
+                android:inputType="numberDecimal"
+                android:textSize="16sp"
+                android:gravity="start" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_save_budget"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="请输入本月预算"
-            android:inputType="numberDecimal"
-            android:layout_marginTop="8dp"/>
+            android:text="保存预算"
+            android:minHeight="48dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp" />
+
     </LinearLayout>
 </ScrollView>
