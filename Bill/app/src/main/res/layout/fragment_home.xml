@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:paddingTop="32dp">
+        android:layout_marginTop="48dp"
+        android:importantForAccessibility="yes">
 
         <TextView
             android:id="@+id/tv_month"
@@ -19,7 +20,8 @@
             android:text="2025年6月"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:contentDescription="当前月份"/>
 
         <TextView
             android:id="@+id/tv_total_income"
@@ -28,7 +30,8 @@
             android:text="总收入：￥0.00"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:contentDescription="总收入：￥0.00"/>
 
         <TextView
             android:id="@+id/tv_total_expense"
@@ -37,7 +40,8 @@
             android:text="总支出：￥0.00"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:contentDescription="总支出：￥0.00"/>
 
         <TextView
             android:id="@+id/tv_balance"
@@ -46,7 +50,8 @@
             android:text="结余：￥0.00"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:contentDescription="结余：￥0.00"/>
 
         <TextView
             android:id="@+id/tv_remaining"
@@ -54,7 +59,8 @@
             android:layout_height="wrap_content"
             android:text="剩余额度：￥0.00"
             android:textSize="20sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:contentDescription="剩余额度：￥0.00"/>
 
         <TextView
             android:id="@+id/tv_avg_daily"
@@ -62,7 +68,8 @@
             android:layout_height="wrap_content"
             android:text="日均消费：￥0.00"
             android:textSize="20sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:contentDescription="日均消费：￥0.00"/>
 
         <TextView
             android:id="@+id/tv_avg_available"
@@ -70,21 +77,24 @@
             android:layout_height="wrap_content"
             android:text="剩余每日可用额度：￥0.00"
             android:textSize="20sp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:contentDescription="剩余每日可用额度：￥0.00"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="8dp"
+            android:importantForAccessibility="yes">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="本月预算："
                 android:textSize="16sp"
-                android:minWidth="100dp" />
+                android:minWidth="100dp"
+                android:contentDescription="本月预算标签"/>
 
             <EditText
                 android:id="@+id/et_budget"
@@ -94,7 +104,9 @@
                 android:hint="请输入本月预算"
                 android:inputType="numberDecimal"
                 android:textSize="16sp"
-                android:gravity="start" />
+                android:gravity="start"
+                android:imeOptions="actionDone"
+                android:contentDescription="本月预算输入"/>
 
         </LinearLayout>
 
@@ -105,7 +117,8 @@
             android:text="保存预算"
             android:minHeight="48dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:contentDescription="保存预算按钮"/>
 
     </LinearLayout>
 </ScrollView>
