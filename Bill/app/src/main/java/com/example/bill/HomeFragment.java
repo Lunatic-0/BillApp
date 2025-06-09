@@ -148,9 +148,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateUI() {
-        String budgetStr = binding.etBudget.getText().toString();
+        if (binding == null) return; // 防止 binding 为 null 崩溃
+
+        String budgetStr = binding.etBudget.getText().toString().trim();
         double budget = 0;
-     
+        try {
+            budget = Double.parseDouble(budgetStr);
+        } catch (NumberFormatException e) {
+            budget = 0;
+        }
 
         Calendar cal = Calendar.getInstance();
         int today = cal.get(Calendar.DAY_OF_MONTH);
