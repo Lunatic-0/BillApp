@@ -19,19 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="总余额：￥0.00"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"
-            android:contentDescription="总余额：￥0.00"/>
+            />
 
         <TextView
             android:id="@+id/tv_remaining"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="本月余额：￥0.00"
-            android:textSize="16sp"
+            android:textSize="24sp"
             android:layout_marginBottom="16dp"
-            android:contentDescription="本月余额：￥0.00"/>
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,9 +45,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="金额："
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:minWidth="80dp"
-                android:contentDescription="金额标签"/>
+                />
 
             <EditText
                 android:id="@+id/et_amount"
@@ -56,10 +56,10 @@
                 android:layout_weight="1"
                 android:hint="请输入金额"
                 android:inputType="numberDecimal"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:gravity="start"
                 android:imeOptions="actionDone"
-                android:contentDescription="金额输入"/>
+                />
 
         </LinearLayout>
 
@@ -75,9 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="备注："
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:minWidth="80dp"
-                android:contentDescription="备注标签"/>
+               />
 
             <EditText
                 android:id="@+id/et_category"
@@ -86,10 +86,10 @@
                 android:layout_weight="1"
                 android:hint="请输入备注"
                 android:inputType="text"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:gravity="start"
                 android:imeOptions="actionDone"
-                android:contentDescription="备注输入"/>
+                />
 
         </LinearLayout>
 
@@ -98,6 +98,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:importantForAccessibility="yes">
 
             <Button
@@ -106,8 +107,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="添加收入"
+                android:textSize="24sp"
                 android:minHeight="48dp"
-                android:contentDescription="添加收入按钮"/>
+                />
 
             <Button
                 android:id="@+id/btn_add_expense"
@@ -115,8 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="添加支出"
+                android:textSize="24sp"
                 android:minHeight="48dp"
-                android:contentDescription="添加支出按钮"/>
+             />
 
         </LinearLayout>
 
@@ -125,7 +128,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:contentDescription="交易记录列表"
             android:nestedScrollingEnabled="false"
             android:importantForAccessibility="yes"/>
 
